@@ -1,0 +1,33 @@
+version: '3.8'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  search-hq:
+    image: docker.io/elastichq/elasticsearch-hq
+    container_name: search-hq.${HOST}
+    depends_on:
+      - search
+    ports:
+      - "5000:5000"
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  mail:
+    image: docker.io/mailhog/mailhog:latest
+    container_name: mail.${HOST}
+    depends_on:
+      - application
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure

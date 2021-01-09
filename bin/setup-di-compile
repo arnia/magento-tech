@@ -1,0 +1,7 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+"${BIN_DIRECTORY}"/magento setup:di:compile
+if [ "$1" == "--sync" ]; then
+  "${BIN_DIRECTORY}"/sync-generated
+fi

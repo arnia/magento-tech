@@ -1,0 +1,124 @@
+version: '3.8'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  application:
+    build:
+      context: ./application/build/context
+      args:
+        - PHP_VERSION=${PHP_VERSION:-7.4}
+    container_name: application.${HOST}
+    environment:
+      - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
+      - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT}
+      - COMPOSER_VERSION=${COMPOSER_VERSION}
+    depends_on:
+      - database
+      - search
+      - cache
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  database:
+    image: mysql:${MYSQL_VERSION:-8.0}
+    container_name: database.${HOST}
+    command: --max_allowed_packet=64M
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./database/entrypoint/:/docker-entrypoint-initdb.d/:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  cache:
+    image: redis
+    container_name: cache.${HOST}
+    ports:
+      - "6379:6379"
+    volumes:
+      - cachedata:/data
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    container_name: search.${HOST}
+    environment:
+      - discovery.type=single-node
+      - node.name=search.${HOST}
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - searchdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  broker:
+    image: rabbitmq:3.7-management-alpine
+    container_name: broker.${HOST}
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - brokerdata:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  accelerator:
+    image: varnish:stable
+    container_name: accelerator.${HOST}
+    depends_on:
+      - application
+    links:
+      - application
+    environment:
+      - VARNISH_SIZE=${VARNISH_SIZE}
+    volumes:
+      - ./accelerator/default.vcl:/etc/varnish/default.vcl:ro
+    ports:
+      - "80:80"
+    networks:
+      - app-tier
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  dbdata:
+  cachedata:
+  searchdata:
+  brokerdata:

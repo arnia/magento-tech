@@ -1,0 +1,26 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+source "${PWD}"/.tech/stack/.env-file
+
+APPLICATION_GATEWAY=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}' application."${HOST}")
+if [ "$1" == "off" ]; then
+  "${BIN_DIRECTORY}"/utility/rootnotty sh -c "echo ';zend_extension=xdebug' > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+  sleep 1
+  "${BIN_DIRECTORY}"/env/restart application
+  echo "Xdebug has been disabled."
+elif [ "$1" == "on" ]; then
+  "${BIN_DIRECTORY}"/utility/rootnotty sh -c "echo \
+	'zend_extension=xdebug\n'\
+	'xdebug.remote_host=${APPLICATION_GATEWAY}\n'\
+	'xdebug.enable=1\n'\
+	'xdebug.remote_enable=1\n'\
+	'xdebug.profiler_enable=0\n'\
+	'xdebug.remote_log=/tmp/xdebug.log\n'\
+	'xdebug.max_nesting_level=512\n'\
+	> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+  sleep 1
+  "${BIN_DIRECTORY}"/env/restart application
+  echo "Xdebug has been enabled."
+else
+  echo "Please specify either 'on' or 'off' as an argument"
+fi

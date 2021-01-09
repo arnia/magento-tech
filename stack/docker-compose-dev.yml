@@ -1,0 +1,22 @@
+version: '3.8'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  application:
+    volumes:
+      - ${PWD}/app:/app/app:cached
+      - ${PWD}/bin:/app/bin:cached
+      - ${PWD}/dev:/app/dev:cached
+      - ${PWD}/lib:/app/lib:cached
+      - ${PWD}/pub:/app/pub:cached
+      - ${PWD}/setup:/app/setup:cached
+      - ${PWD}/var:/app/var:delegated
+      - ${PWD}/auth.json:/app/auth.json:cached
+      - ${PWD}/composer.json:/app/composer.json:cached
+      - ${PWD}/composer.lock:/app/composer.lock
+      - ~/.composer:/var/www/.composer:cached
+      - ./application/vhosts/${HOST}.conf:/opt/docker/etc/httpd/conf.d/${HOST}.conf:cached
+      - ./application/build/configuration/docker-php-ext-mailhog.ini:/usr/local/etc/php/conf.d/docker-php-ext-mailhog.ini:cached

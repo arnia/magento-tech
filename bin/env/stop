@@ -1,0 +1,10 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+docker-compose --env-file="${DOCKER_COMPOSE_ENV_FILE}" \
+  -f "${STACK_DIRECTORY}"/docker-compose.yml \
+  -f "${STACK_DIRECTORY}"/docker-compose-dev.yml \
+  -f "${STACK_DIRECTORY}"/docker-compose-utility.yml \
+  -p "${APPLICATION_NAME}" \
+  stop \
+  "$@"

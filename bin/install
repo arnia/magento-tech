@@ -1,0 +1,33 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+source "${PWD}"/.tech/stack/.env-file
+
+"${BIN_DIRECTORY}"/env/build
+
+"${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/config.php /app/app/etc/config.php
+"${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/env.php /app/app/etc/env.php
+
+
+"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/vendor
+"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/generated
+
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
+
+"${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
+
+"${BIN_DIRECTORY}"/setup-upgrade
+"${BIN_DIRECTORY}"/setup-di-compile --sync
+"${BIN_DIRECTORY}"/setup-static-content-deploy
+
+"${BIN_DIRECTORY}"/composer dump-autoload -o -v
+
+"${BIN_DIRECTORY}"/indexer-reindex
+"${BIN_DIRECTORY}"/cache-enable
+
+echo "Application installed successfully."
+echo "$> ${HOST} >> /etc/hosts"
+echo "Open application: http://${HOST}"

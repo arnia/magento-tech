@@ -1,0 +1,23 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+"${BIN_DIRECTORY}"/magento maintenance:enable
+
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf generated/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
+
+"${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
+
+"${BIN_DIRECTORY}"/cache-flush
+"${BIN_DIRECTORY}"/setup-upgrade
+"${BIN_DIRECTORY}"/setup-di-compile --sync
+"${BIN_DIRECTORY}"/setup-static-content-deploy
+
+"${BIN_DIRECTORY}"/composer dump-autoload -o -v
+
+"${BIN_DIRECTORY}"/indexer-reindex
+"${BIN_DIRECTORY}"/cache-enable
+
+"${BIN_DIRECTORY}"/magento maintenance:disable

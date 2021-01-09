@@ -1,0 +1,5 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+rm -rf "${APP_DIRECTORY}"/generated/*
+"${BIN_DIRECTORY}"/utility/syncfromcnt generated

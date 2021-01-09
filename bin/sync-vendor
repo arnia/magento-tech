@@ -1,0 +1,5 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+rm -rf "${APP_DIRECTORY}"/vendor/*
+"${BIN_DIRECTORY}"/utility/syncfromcnt vendor

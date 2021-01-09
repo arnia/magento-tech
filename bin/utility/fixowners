@@ -1,0 +1,12 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+echo "Correcting filesystem ownerships..."
+
+if [ -z "$1" ]; then
+  "${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
+else
+  "${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/"$1"
+fi
+
+echo "Filesystem ownerships corrected"

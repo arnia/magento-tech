@@ -1,0 +1,4 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+"${BIN_DIRECTORY}"/utility/cli bin/magento "$@"

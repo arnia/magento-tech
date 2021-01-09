@@ -1,0 +1,8 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+if [ "$1" == "--root" ]; then
+  "${BIN_DIRECTORY}"/utility/root bash
+else
+  "${BIN_DIRECTORY}"/utility/cli bash
+fi

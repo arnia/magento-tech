@@ -1,0 +1,14 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+[ -z "$1" ] && echo "Please specify a source directory or file to copy to container" && exit
+[ -z "$2" ] && echo "Please specify a destination directory or file to copy to container" && exit
+
+echo "Copying from host to container..."
+
+if [ -f "$1" ]; then
+  docker cp "$1" application.simplypaving.docker:/"$2"
+else
+  docker cp "$1" application.simplypaving.docker:"$(dirname "$2")"
+fi
+echo "Completed copying [$1] path from host to container path [$2]"
