@@ -18,7 +18,7 @@ This setup assumes you are running Docker on a computer with at least 4GB of all
 Run this automated one-liner from the directory you have installed your project.
 
 ```bash
-curl -s https://github.com/arnia/magento-tech/master/onelinesetup | bash -s -- [APPLICATION_NAME]
+curl -s https://raw.githubusercontent.com/arnia/magento-tech/master/setup | bash -s -- [APPLICATION_NAME]
 ```
 
 Note that since we need to write to `/etc/hosts` for DNS resolution, you will be prompted for your system password during setup.
@@ -29,7 +29,7 @@ After the one-liner above completes running, you should be able to use the Magen
 
 ```bash
 # Download the Magento Tech tool:
-curl -s https://github.com/arnia/magento-tech/master/installer | bash
+curl -s https://raw.githubusercontent.com/arnia/magento-tech/master/installer | bash
 
 # Setup application by providing [APPLICATION_NAME]:
 .tech/bin/setup [APPLICATION_NAME]
