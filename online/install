@@ -3,8 +3,8 @@ APPLICATION=${1:-application}
 
 curl -s https://raw.githubusercontent.com/arnia/magento-tech/master/online/download | bash
 
-bin/setup "${APPLICATION}"
-bin/install
+.tech/bin/setup "${APPLICATION}"
+.tech/bin/install
 
 echo "Your system password has been requested to add an entry to /etc/hosts..."
 echo "127.0.0.1 ::1 $DOMAIN" | sudo tee -a /etc/hosts
