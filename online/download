@@ -1,8 +1,14 @@
 #!/bin/bash
 
-mkdir -p .tech
-rm -rf .tech/*
-cd .tech
+TOOL_DIR=".tech"
+
+if [ -d "${TOOL_DIR}" ]; then
+  rm -rf "${TOOL_DIR}"
+fi
+
+mkdir -p "${TOOL_DIR}"
+cd "${TOOL_DIR}" || exit
+
 git init --quiet
 git remote add origin https://github.com/arnia/magento-tech.git
 git fetch origin --quiet
