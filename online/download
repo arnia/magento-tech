@@ -6,4 +6,4 @@ git init --quiet
 git remote add origin https://github.com/arnia/magento-tech.git
 git fetch origin --quiet
 git checkout origin/master --quiet
-rm -rf .git .gitignore
+rm -rf .git .gitignore ../online
