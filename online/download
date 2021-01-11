@@ -1,6 +1,7 @@
 #!/bin/bash
 
 mkdir -p .tech
+rm -rf .tech/*
 cd .tech
 git init --quiet
 git remote add origin https://github.com/arnia/magento-tech.git
