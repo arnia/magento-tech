@@ -7,16 +7,18 @@ source "${PWD}"/.tech/stack/.env-file
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/config.php /app/app/etc/config.php
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/env.php /app/app/etc/env.php
 
+echo "Make sure that vendor & generated folders exist and have permissions"
+"${BIN_DIRECTORY}"/utility/root mkdir -p /app/vendor
+"${BIN_DIRECTORY}"/utility/root chown -R www-data:www-data /app/vendor
+"${BIN_DIRECTORY}"/utility/root mkdir -p /app/generated
+"${BIN_DIRECTORY}"/utility/root chown -R www-data:www-data /app/generated
 
-"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/vendor
-"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/generated
+echo "Clean up build files"
+"${BIN_DIRECTORY}"/utility/root rm -rf pub/static/*
+"${BIN_DIRECTORY}"/utility/root rm -rf var/page_cache/*
+"${BIN_DIRECTORY}"/utility/root rm -rf var/view_preprocessed/*
 
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
-
+echo "Install required packages"
 "${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
 
 "${BIN_DIRECTORY}"/setup-upgrade
