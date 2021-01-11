@@ -30,7 +30,7 @@ echo "Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento indexer:reindex
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento cache:enable
 
-if [ $(sed -n "/simplypaving.docker/=" /etc/hosts) == 0 ]; then
+if [ $(sed -n "/${HOST}/=" /etc/hosts) == 0 ]; then
   echo "Create a DNS host entry for the application"
   echo "127.0.0.1 ${HOST}" | sudo tee -a /etc/hosts
 fi
