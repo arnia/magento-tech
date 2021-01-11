@@ -29,5 +29,6 @@ source "${PWD}"/.tech/stack/.env-file
 "${BIN_DIRECTORY}"/cache-enable
 
 echo "Application installed successfully."
-echo "$> ${HOST} >> /etc/hosts"
+# Create a DNS host entry for the site:
+echo "127.0.0.1 ::1 ${HOST}" | sudo tee -a /etc/hosts
 echo "Open application: http://${HOST}"

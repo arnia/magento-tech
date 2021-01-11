@@ -18,5 +18,5 @@ services:
       - ${PWD}/composer.json:/app/composer.json:cached
       - ${PWD}/composer.lock:/app/composer.lock
       - ~/.composer:/var/www/.composer:cached
-      - ./application/vhosts/${HOST}.conf:/opt/docker/etc/httpd/conf.d/${HOST}.conf:cached
+      - ./application/vhosts/application.docker.conf:/opt/docker/etc/httpd/conf.d/application.docker.conf:cached
       - ./application/build/configuration/docker-php-ext-mailhog.ini:/usr/local/etc/php/conf.d/docker-php-ext-mailhog.ini:cached

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+[ -z "${1}" ] && printf "Please specify an application name.\n.tech/bin/setup <application>\n" && exit
+
+TOKEN="<:APPLICATION:>"
+APPLICATION="${1}"
+SAMPLE_FILES=$(find "${PWD}"/.tech -type f -name "*.sample")
+
+for SAMPLE_FILE in ${SAMPLE_FILES}; do
+  FILE=${SAMPLE_FILE/.sample/}
+  if [ -f "${FILE}" ]; then
+    rm -f "${FILE}"
+  fi
+  sed "s/${TOKEN}/${APPLICATION}/g" "${SAMPLE_FILE}" >"${FILE}"
+done
