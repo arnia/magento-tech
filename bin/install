@@ -4,33 +4,35 @@ source "${PWD}"/.tech/stack/.env-file
 
 "${BIN_DIRECTORY}"/env/build
 
+echo "Generate application skeleton files ..."
+"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/vendor
+"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/generated
+
+echo "Generate application configuration files ..."
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/config.php /app/app/etc/config.php
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/env.php /app/app/etc/env.php
 
-echo "Make sure that vendor & generated folders exist and have permissions"
-"${BIN_DIRECTORY}"/utility/root mkdir -p /app/vendor
-"${BIN_DIRECTORY}"/utility/root chown -R www-data:www-data /app/vendor
-"${BIN_DIRECTORY}"/utility/root mkdir -p /app/generated
-"${BIN_DIRECTORY}"/utility/root chown -R www-data:www-data /app/generated
+echo "Clean static files ..."
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
+"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
 
-echo "Clean up build files"
-"${BIN_DIRECTORY}"/utility/root rm -rf pub/static/*
-"${BIN_DIRECTORY}"/utility/root rm -rf var/page_cache/*
-"${BIN_DIRECTORY}"/utility/root rm -rf var/view_preprocessed/*
+echo "Install required packages ..."
+"${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
 
-echo "Install required packages"
-"${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
+echo "Run magento administrative tasks ..."
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:upgrade
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:di:compile
+"${BIN_DIRECTORY}"/sync-generated
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:static-content:deploy -f --jobs=10
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento indexer:reindex
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento cache:enable
 
-"${BIN_DIRECTORY}"/setup-upgrade
-"${BIN_DIRECTORY}"/setup-di-compile --sync
-"${BIN_DIRECTORY}"/setup-static-content-deploy
 
-"${BIN_DIRECTORY}"/composer dump-autoload -o -v
-
-"${BIN_DIRECTORY}"/indexer-reindex
-"${BIN_DIRECTORY}"/cache-enable
+echo "Create a DNS host entry for the application"
+echo "127.0.0.1 ::1 ${HOST}" | sudo tee -a /etc/hosts
 
 echo "Application installed successfully."
-# Create a DNS host entry for the site:
-echo "127.0.0.1 ::1 ${HOST}" | sudo tee -a /etc/hosts
-echo "Open application: http://${HOST}"
+echo "Open: http://${HOST}"
