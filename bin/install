@@ -11,8 +11,8 @@ echo "Generate application configuration files ..."
 echo "Generate application skeleton files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
-
 "${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /var/www/.composer
 
 echo "Clean static files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
