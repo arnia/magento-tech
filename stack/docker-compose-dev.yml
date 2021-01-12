@@ -7,16 +7,16 @@ networks:
 services:
   application:
     volumes:
-      - ${PWD}/app:/app/app
-      - ${PWD}/bin:/app/bin
-      - ${PWD}/dev:/app/dev
-      - ${PWD}/lib:/app/lib
-      - ${PWD}/pub:/app/pub
-      - ${PWD}/setup:/app/setup
-      - ${PWD}/var:/app/var
-      - ${PWD}/auth.json:/app/auth.json
-      - ${PWD}/composer.json:/app/composer.json
-      - ${PWD}/composer.lock:/app/composer.lock
-      - ~/.composer:/var/www/.composer
+      - ${PWD}/app:/app/app:cached
+      - ${PWD}/bin:/app/bin:cached
+      - ${PWD}/dev:/app/dev:cached
+      - ${PWD}/lib:/app/lib:cached
+      - ${PWD}/pub:/app/pub:cached
+      - ${PWD}/setup:/app/setup:cached
+      - ${PWD}/var:/app/var:delegated
+      - ${PWD}/auth.json:/app/auth.json:cached
+      - ${PWD}/composer.json:/app/composer.json:cached
+      - ${PWD}/composer.lock:/app/composer.lock:delegated
+      - ~/.composer:/var/www/.composer:cached
       - ./application/vhosts/application.docker.conf:/opt/docker/etc/httpd/conf.d/application.docker.conf:cached
       - ./application/build/configuration/docker-php-ext-mailhog.ini:/usr/local/etc/php/conf.d/docker-php-ext-mailhog.ini:cached

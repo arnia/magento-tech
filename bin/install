@@ -6,13 +6,9 @@ source "${PWD}"/.tech/stack/.env-file
 
 echo "Generate application skeleton files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/vendor
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/generated
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
 
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/var
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/pub
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app/etc
 
 echo "Generate application configuration files ..."
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/config.php /app/app/etc/config.php
