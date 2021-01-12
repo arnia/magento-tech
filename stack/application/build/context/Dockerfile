@@ -32,8 +32,7 @@ COPY vhosts/application.docker.conf /opt/docker/etc/httpd/conf.d/application.doc
 
 # Setup the application
 COPY --chown=${USER}:${GROUP} magento/config.php /app/app/etc/config.php
-COPY --chown=${USER}:${GROUP} magento/env.php /app/app/etc/env.php
+COPY --chown=${USER}:${GROUP} magento/env.php /.app/app/etc/env.php
 RUN mkdir -p /app/vendor \
  && mkdir -p /app/generated \
- && chown -R ${USER}:${GROUP} /app \
- && chown -R ${USER}:${GROUP} /var/www/.composer
+ && chown -R ${USER}:${GROUP} /app
