@@ -2,6 +2,9 @@ ARG PHP_VERSION
 FROM webdevops/php-apache:${PHP_VERSION}
 MAINTAINER Sorin Radomir Antal <sorin.antal@arnia.ro
 
+ENV USER=www-data
+ENV GROUP=www-data
+
 RUN pecl channel-update pecl.php.net \
   && pecl install xdebug
 
@@ -26,3 +29,11 @@ RUN printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/update/cron.php\n' >> /et
   && printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/bin/magento setup:cron:run\n#\n' >> /etc/crontab
 
 COPY vhosts/application.docker.conf /opt/docker/etc/httpd/conf.d/application.docker.conf
+
+# Setup the application
+COPY --chown=${USER}:${GROUP} magento/config.php /app/app/etc/config.php
+COPY --chown=${USER}:${GROUP} magento/env.php /app/app/etc/env.php
+RUN mkdir -p /app/vendor \
+ && mkdir -p /app/generated \
+ && chown -R ${USER}:${GROUP} /app \
+ && chown -R ${USER}:${GROUP} /var/www/.composer
