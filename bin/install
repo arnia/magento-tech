@@ -4,10 +4,6 @@ source "${PWD}"/.tech/stack/.env-file
 
 "${BIN_DIRECTORY}"/env/build
 
-echo "Grant permissions to application files ..."
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /var/www/.composer
-
 echo "Clean static files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
