@@ -29,10 +29,3 @@ RUN printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/update/cron.php\n' >> /et
   && printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/bin/magento setup:cron:run\n#\n' >> /etc/crontab
 
 COPY vhosts/application.docker.conf /opt/docker/etc/httpd/conf.d/application.docker.conf
-
-# Setup the application
-COPY --chown=${USER}:${GROUP} magento/config.php /app/app/etc/config.php
-COPY --chown=${USER}:${GROUP} magento/env.php /.app/app/etc/env.php
-RUN mkdir -p /app/vendor \
- && mkdir -p /app/generated \
- && chown -R ${USER}:${GROUP} /app
