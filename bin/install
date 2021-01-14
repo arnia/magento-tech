@@ -7,11 +7,11 @@ source "${PWD}"/.tech/stack/.env-file
 echo "Generate application skeleton files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
 
 echo "Generate application configuration files ..."
-"${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/config.php /app/app/etc/config.php
-"${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/configuration/env.php /app/app/etc/env.php
+"${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/build/context/magento/config.php /app/app/etc/config.php
+"${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/build/context/magento/env.php /app/app/etc/env.php
+"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
 
 echo "Clean static files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
