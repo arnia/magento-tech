@@ -37,7 +37,7 @@ echo "Clean static files ..."
 echo "Install required packages ..."
 "${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
 "${BIN_DIRECTORY}"/sync-vendor
-"${BIN_DIRECTORY}"/utility/rootnotty npm install -v
+"${BIN_DIRECTORY}"/utility/rootnotty npm install --verbose
 
 echo "Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:upgrade
