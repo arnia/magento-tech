@@ -2,6 +2,10 @@
 source "${PWD}"/.tech/.bootstrap
 source "${PWD}"/.tech/stack/.env-file
 
+if [ ! -f "${APP_DIRECTORY}/auth.json" ]; then
+  echo "{}" > "${APP_DIRECTORY}/auth.json"
+fi
+
 if [ ! -f "${APP_DIRECTORY}/package.json" ]; then
   cp "${APP_DIRECTORY}/package.json.sample" "${APP_DIRECTORY}/package.json"
 fi
