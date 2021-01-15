@@ -2,6 +2,22 @@
 source "${PWD}"/.tech/.bootstrap
 source "${PWD}"/.tech/stack/.env-file
 
+if [ ! -f "${APP_DIRECTORY}/package.json" ]; then
+  cp "${APP_DIRECTORY}/package.json.sample" "${APP_DIRECTORY}/package.json"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/Gruntfile.js" ]; then
+  cp "${APP_DIRECTORY}/Gruntfile.js.sample" "${APP_DIRECTORY}/Gruntfile.js"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/grunt-config.json" ]; then
+  cp "${APP_DIRECTORY}/grunt-config.json.sample" "${APP_DIRECTORY}/grunt-config.json"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/package.lock" ]; then
+  touch "${APP_DIRECTORY}/package.lock"
+fi
+
 "${BIN_DIRECTORY}"/env/build
 
 echo "Generate application skeleton files ..."
@@ -21,6 +37,7 @@ echo "Clean static files ..."
 echo "Install required packages ..."
 "${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
 "${BIN_DIRECTORY}"/sync-vendor
+"${BIN_DIRECTORY}"/utility/rootnotty npm install -v
 
 echo "Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:upgrade
