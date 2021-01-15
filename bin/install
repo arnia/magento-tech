@@ -14,8 +14,8 @@ if [ ! -f "${APP_DIRECTORY}/grunt-config.json" ]; then
   cp "${APP_DIRECTORY}/grunt-config.json.sample" "${APP_DIRECTORY}/grunt-config.json"
 fi
 
-if [ ! -f "${APP_DIRECTORY}/package.lock" ]; then
-  touch "${APP_DIRECTORY}/package.lock"
+if [ ! -f "${APP_DIRECTORY}/package-lock.json" ]; then
+  echo "{}" > "${APP_DIRECTORY}/package-lock.json"
 fi
 
 "${BIN_DIRECTORY}"/env/build

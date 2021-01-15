@@ -19,7 +19,7 @@ services:
       - ${PWD}/composer.lock:/app/composer.lock:delegated
       - ${PWD}/dev/tools/grunt/configs/themes.js:/app/dev/tools/grunt/configs/themes.js:cached
       - ${PWD}/package.json:/app/package.json:delegated
-      - ${PWD}/package.lock:/app/package.lock:delegated
+      - ${PWD}/package-lock.json:/app/package-lock.json:delegated
       - ${PWD}/Gruntfile.js:/app/Gruntfile.js:delegated
       - ${PWD}/grunt-config.json:/app/grunt-config.json:delegated
       - ~/.composer:/var/www/.composer
