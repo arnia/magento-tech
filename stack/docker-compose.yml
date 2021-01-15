@@ -12,6 +12,7 @@ services:
         - PHP_VERSION=${PHP_VERSION:-7.4}
     container_name: application.${HOST}
     environment:
+      - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
       - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT}
       - COMPOSER_VERSION=${COMPOSER_VERSION}
       - APPLICATION_USER=${APPLICATION_USER}
