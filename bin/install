@@ -58,3 +58,4 @@ fi
 
 echo "Application installed successfully."
 echo "Open: http://${HOST}"
+echo "Open: http://${HOST}/admin with credentials: [admin:admin123]"
