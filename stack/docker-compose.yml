@@ -15,8 +15,6 @@ services:
       - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
       - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT}
       - COMPOSER_VERSION=${COMPOSER_VERSION}
-      - APPLICATION_USER=${APPLICATION_USER}
-      - APPLICATION_GROUP=${APPLICATION_GROUP}
     depends_on:
       - database
       - search

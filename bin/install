@@ -25,23 +25,22 @@ fi
 "${BIN_DIRECTORY}"/env/build
 
 echo "Generate application skeleton files ..."
-"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
-"${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
+"${BIN_DIRECTORY}"/utility/clinotty mkdir -p /app/vendor
+"${BIN_DIRECTORY}"/utility/clinotty mkdir -p /app/generated
 
 echo "Generate application configuration files ..."
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/build/context/magento/config.php /app/app/etc/config.php
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/build/context/magento/env.php /app/app/etc/env.php
-"${BIN_DIRECTORY}"/utility/rootnotty chown -R www-data:www-data /app
 
 echo "Clean static files ..."
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
+"${BIN_DIRECTORY}"/utility/clinotty rm -rf pub/static/*
+"${BIN_DIRECTORY}"/utility/clinotty rm -rf var/page_cache/*
+"${BIN_DIRECTORY}"/utility/clinotty rm -rf var/view_preprocessed/*
 
 echo "Install required packages ..."
 "${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
 "${BIN_DIRECTORY}"/sync-vendor
-"${BIN_DIRECTORY}"/utility/rootnotty npm install --verbose
+"${BIN_DIRECTORY}"/utility/clinotty npm install --verbose
 
 echo "Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:upgrade
