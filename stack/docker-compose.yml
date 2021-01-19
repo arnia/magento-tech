@@ -16,7 +16,6 @@ services:
       - COMPOSER_VERSION=${COMPOSER_VERSION}
       - APPLICATION_USER=${APPLICATION_USER}
       - APPLICATION_GROUP=${APPLICATION_GROUP}
-      - PHP_SENDMAIL_PATH=${PHP_SENDMAIL_PATH}
     depends_on:
       - database
       - search
