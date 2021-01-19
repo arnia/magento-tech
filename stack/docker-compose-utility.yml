@@ -14,9 +14,6 @@ services:
       - "5000:5000"
     networks:
       - app-tier
-    deploy:
-      restart_policy:
-        condition: on-failure
 
   mail:
     image: docker.io/mailhog/mailhog:latest
@@ -28,6 +25,3 @@ services:
       - "8025:8025"
     networks:
       - app-tier
-    deploy:
-      restart_policy:
-        condition: on-failure

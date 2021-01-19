@@ -1,8 +1,6 @@
 ARG PHP_VERSION
 FROM webdevops/php-apache:${PHP_VERSION}
-MAINTAINER Sorin Radomir Antal <sorin.antal@arnia.ro
-
-RUN sed -i -e "s/www-data/${APPLICATION_USER}/g" /etc/apache2/envvars
+MAINTAINER Sorin Radomir Antal <sorin.antal@arnia.ro>
 
 RUN pecl channel-update pecl.php.net \
   && pecl install xdebug
@@ -15,12 +13,13 @@ RUN curl -sSLO https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mh
   && mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
 COPY configuration/docker-php-ext-mailhog.ini /usr/local/etc/php/conf.d/docker-php-ext-mailhog.ini
+COPY configuration/docker-apache2-envvars /etc/apache2/envvars
 
 RUN apt-get install -y gnupg \
   && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get install -y nodejs \
   && mkdir -p /var/www/.config /var/www/.npm \
-  && chown "${APPLICATION_USER}":"${APPLICATION_USER}" /var/www/.config /var/www/.npm \
+  && chown www-data:www-data /var/www/.config /var/www/.npm \
   && npm install -g grunt-cli
 
 RUN printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/update/cron.php\n' >> /etc/crontab \
@@ -28,3 +27,4 @@ RUN printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/update/cron.php\n' >> /et
   && printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/bin/magento setup:cron:run\n#\n' >> /etc/crontab
 
 COPY vhosts/application.docker.conf /opt/docker/etc/httpd/conf.d/application.docker.conf
+

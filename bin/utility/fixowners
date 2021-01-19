@@ -3,10 +3,12 @@ source "${PWD}"/.tech/.bootstrap
 
 echo "Correcting filesystem ownerships..."
 
+"${BIN_DIRECTORY}"/utility/rootnotty usermod -a -G application www-data
+"${BIN_DIRECTORY}"/utility/rootnotty usermod -a -G www-data application
 if [ -z "$1" ]; then
-  "${BIN_DIRECTORY}"/utility/rootnotty chown -R "${APPLICATION_USER}":"${APPLICATION_USER}" /app
+  "${BIN_DIRECTORY}"/utility/rootnotty chown -R application:application /app
 else
-  "${BIN_DIRECTORY}"/utility/rootnotty chown -R "${APPLICATION_USER}":"${APPLICATION_USER}" /app/"$1"
+  "${BIN_DIRECTORY}"/utility/rootnotty chown -R application:application /app/"$1"
 fi
 
 echo "Filesystem ownerships corrected"

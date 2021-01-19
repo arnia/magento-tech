@@ -4,10 +4,11 @@ source "${PWD}"/.tech/.bootstrap
 echo "Correcting filesystem permissions..."
 
 if [ -z "$1" ]; then
-  "${BIN_DIRECTORY}"/clinotty find var vendor pub/static pub/media app/etc \( -type f -or -type d \) -exec chmod u+w {} +
-  "${BIN_DIRECTORY}"/clinotty chmod u+x bin/magento
+  "${BIN_DIRECTORY}"/utility/rootnotty find var vendor pub/static pub/media app/etc generated \( -type f -or -type d \) -exec chmod u+w {} +
+  "${BIN_DIRECTORY}"/utility/rootnotty find var vendor pub/static pub/media app/etc generated \( -type f -or -type d \) -exec chmod g+w {} +
+  "${BIN_DIRECTORY}"/utility/rootnotty chmod u+x bin/magento
 else
-  "${BIN_DIRECTORY}"/clinotty find "$1" \( -type f -or -type d \) -exec chmod u+w {} +
+  "${BIN_DIRECTORY}"/utility/rootnotty find "$1" \( -type f -or -type d \) -exec chmod u+w {} +
 fi
 
 echo "Filesystem permissions corrected."
