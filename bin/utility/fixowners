@@ -3,8 +3,6 @@ source "${PWD}"/.tech/.bootstrap
 
 echo "Correcting filesystem ownerships..."
 
-"${BIN_DIRECTORY}"/utility/rootnotty usermod -a -G application www-data
-"${BIN_DIRECTORY}"/utility/rootnotty usermod -a -G www-data application
 if [ -z "$1" ]; then
   "${BIN_DIRECTORY}"/utility/rootnotty chown -R application:application /app
 else
