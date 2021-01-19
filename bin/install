@@ -3,7 +3,7 @@ source "${PWD}"/.tech/.bootstrap
 source "${PWD}"/.tech/stack/.env-file
 
 if [ ! -f "${APP_DIRECTORY}/auth.json" ]; then
-  echo "{}" > "${APP_DIRECTORY}/auth.json"
+  echo "{}" >"${APP_DIRECTORY}/auth.json"
 fi
 
 if [ ! -f "${APP_DIRECTORY}/package.json" ]; then
@@ -19,7 +19,7 @@ if [ ! -f "${APP_DIRECTORY}/grunt-config.json" ]; then
 fi
 
 if [ ! -f "${APP_DIRECTORY}/package-lock.json" ]; then
-  echo "{}" > "${APP_DIRECTORY}/package-lock.json"
+  echo "{}" >"${APP_DIRECTORY}/package-lock.json"
 fi
 
 "${BIN_DIRECTORY}"/env/build
@@ -43,7 +43,7 @@ echo "Clean static files ..."
 
 echo "Install required packages ..."
 "${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
-#"${BIN_DIRECTORY}"/sync-vendor
+"${BIN_DIRECTORY}"/sync-vendor
 "${BIN_DIRECTORY}"/utility/rootnotty npm install --verbose
 
 echo "Run magento administrative tasks ..."
@@ -54,15 +54,18 @@ echo "Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento indexer:reindex
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento cache:enable
 
+if [ "${OS}" != "Darwin" ]; then
+  echo "Setting local permissions ..."
+  sudo chown -R $(whoami):$(id -gn) .
+fi
+"${BIN_DIRECTORY}"/utility/fixowners
+
 if [ ! $(sed -n "/${HOST}/=" /etc/hosts) ]; then
   echo "Create a DNS host entry for the application"
   echo "127.0.0.1 ${HOST}" | sudo tee -a /etc/hosts
 fi
 
-echo "Setting local permissions ..."
-sudo chown -R $(whoami):$(id -gn) .
-"${BIN_DIRECTORY}"/utility/fixowners
-
+echo "-------------------------------------------------------------"
 echo "Application installed successfully."
 echo "Open: http://${HOST}"
 echo "Open: http://${HOST}/admin with credentials: [admin:admin123]"

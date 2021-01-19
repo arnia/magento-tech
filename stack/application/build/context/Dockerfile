@@ -12,7 +12,7 @@ RUN curl -sSLO https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mh
   && chmod +x mhsendmail_linux_amd64 \
   && mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
-COPY configuration/docker-php-ext-mailhog.ini /usr/local/etc/php/conf.d/docker-php-ext-mailhog.ini
+COPY configuration/docker-php-ext-mailhog.ini /usr/local/etc/php/conf.d/98-webdevops.ini
 COPY configuration/docker-apache2-envvars /etc/apache2/envvars
 
 RUN apt-get install -y gnupg \
