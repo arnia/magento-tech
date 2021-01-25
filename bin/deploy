@@ -3,10 +3,14 @@ source "${PWD}"/.tech/.bootstrap
 
 "${BIN_DIRECTORY}"/magento maintenance:enable
 
+"${BIN_DIRECTORY}"/bootstrap
+
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf generated/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
+
+"${BIN_DIRECTORY}"/utility/fixperms
 
 "${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
 
@@ -19,5 +23,7 @@ source "${PWD}"/.tech/.bootstrap
 
 "${BIN_DIRECTORY}"/indexer-reindex
 "${BIN_DIRECTORY}"/cache-enable
+
+"${BIN_DIRECTORY}"/utility/fixowners
 
 "${BIN_DIRECTORY}"/magento maintenance:disable

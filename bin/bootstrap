@@ -1,0 +1,22 @@
+#!/bin/bash
+source "${PWD}"/.tech/.bootstrap
+
+if [ ! -f "${APP_DIRECTORY}/auth.json" ]; then
+  echo "{}" >"${APP_DIRECTORY}/auth.json"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/package.json" ]; then
+  cp "${APP_DIRECTORY}/package.json.sample" "${APP_DIRECTORY}/package.json"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/Gruntfile.js" ]; then
+  cp "${APP_DIRECTORY}/Gruntfile.js.sample" "${APP_DIRECTORY}/Gruntfile.js"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/grunt-config.json" ]; then
+  cp "${APP_DIRECTORY}/grunt-config.json.sample" "${APP_DIRECTORY}/grunt-config.json"
+fi
+
+if [ ! -f "${APP_DIRECTORY}/package-lock.json" ]; then
+  echo "{}" >"${APP_DIRECTORY}/package-lock.json"
+fi
