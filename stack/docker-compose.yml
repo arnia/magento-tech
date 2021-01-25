@@ -21,6 +21,8 @@ services:
       - database
       - search
       - cache
+    ports:
+      - "80:80"
     networks:
       - app-tier
 
@@ -97,7 +99,7 @@ services:
     volumes:
       - ./accelerator/default.vcl:/etc/varnish/default.vcl:ro
     ports:
-      - "80:80"
+      - "9090:80"
     networks:
       - app-tier
 
