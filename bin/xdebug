@@ -2,22 +2,25 @@
 source "${PWD}"/.tech/.bootstrap
 source "${PWD}"/.tech/stack/.env-file
 
-APPLICATION_GATEWAY=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}' application."${HOST}")
+APPLICATION_GATEWAY=host.docker.internal
+if [ "${OS}" != "Darwin" ]; then
+  APPLICATION_GATEWAY=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}' application."${HOST}")
+fi
+
 if [ "$1" == "off" ]; then
-  "${BIN_DIRECTORY}"/utility/rootnotty sh -c "echo ';zend_extension=xdebug' > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+  "${BIN_DIRECTORY}"/utility/rootnotty sh -c "echo ';zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/xdebug.so' > /usr/local/etc/php/conf.d/01-xdebug.ini"
   sleep 1
   "${BIN_DIRECTORY}"/env/restart application
   echo "Xdebug has been disabled."
 elif [ "$1" == "on" ]; then
   "${BIN_DIRECTORY}"/utility/rootnotty sh -c "echo \
-	'zend_extension=xdebug\n'\
+	'zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/xdebug.so\n'\
 	'xdebug.remote_host=${APPLICATION_GATEWAY}\n'\
 	'xdebug.enable=1\n'\
 	'xdebug.remote_enable=1\n'\
-	'xdebug.profiler_enable=0\n'\
 	'xdebug.remote_log=/tmp/xdebug.log\n'\
 	'xdebug.max_nesting_level=512\n'\
-	> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+	> /usr/local/etc/php/conf.d/01-xdebug.ini"
   sleep 1
   "${BIN_DIRECTORY}"/env/restart application
   echo "Xdebug has been enabled."

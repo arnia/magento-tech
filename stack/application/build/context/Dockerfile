@@ -5,11 +5,14 @@ MAINTAINER Sorin Radomir Antal <sorin.antal@arnia.ro>
 RUN usermod -a -G application www-data \
   && usermod -a -G www-data application
 
-RUN pecl channel-update pecl.php.net \
-  && pecl install xdebug
-
-RUN docker-php-ext-enable xdebug \
-  && sed -i -e 's/^zend_extension/\;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN curl -sSLO https://xdebug.org/files/xdebug-2.9.8.tgz \
+  && tar -xvzf xdebug-2.9.8.tgz \
+  && cd xdebug-2.9.8 \
+  && phpize \
+  && ./configure \
+  && make \
+  && cp modules/xdebug.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/ \
+  && echo ';zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/xdebug.so' > /usr/local/etc/php/conf.d/01-xdebug.ini
 
 RUN curl -sSLO https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 \
   && chmod +x mhsendmail_linux_amd64 \
