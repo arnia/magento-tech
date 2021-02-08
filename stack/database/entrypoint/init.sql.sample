@@ -132,7 +132,7 @@ CREATE TABLE `admin_user` (
 
 LOCK TABLES `admin_user` WRITE;
 /*!40000 ALTER TABLE `admin_user` DISABLE KEYS */;
-INSERT INTO `admin_user` VALUES (1,'<:APPLICATION:>','<:APPLICATION:>','<:APPLICATION:>@<:APPLICATION:>.docker','admin','78d08f8edc0dc0e528b1c4ac356350d6f79fdeb1ab0027e65d01d30a69ff0840:UTcETTyXD4nk1nS1:2','2020-12-01 19:24:02','2020-12-10 16:41:18','2020-12-10 16:35:29',10,0,1,'{\"configState\":{\"system_full_page_cache\":\"1\",\"system_mysqlmq\":\"0\",\"system_cron\":\"0\",\"system_smtp\":\"0\",\"system_currency\":\"0\",\"system_adminnotification\":\"0\",\"system_backup\":\"0\",\"system_bulk\":\"0\",\"system_media_storage_configuration\":\"0\",\"system_upload_configuration\":\"0\",\"system_media_gallery\":\"1\",\"system_adobe_stock_integration\":\"0\"}}',NULL,NULL,'en_US',0,NULL,NULL,NULL);
+INSERT INTO `admin_user` VALUES (1,'<:APPLICATION:>','<:APPLICATION:>','<:APPLICATION:>@<:APPLICATION:>.docker','admin','78d08f8edc0dc0e528b1c4ac356350d6f79fdeb1ab0027e65d01d30a69ff0840:UTcETTyXD4nk1nS1:2','2020-12-01 19:24:02','2020-12-10 16:41:18','2020-12-10 16:35:29',10,0,1,'{\"configState\":{\"system_full_page_cache\":\"1\",\"system_mysqlmq\":\"0\",\"system_cron\":\"0\",\"system_smtp\":\"0\",\"system_currency\":\"0\",\"system_adminnotification\":\"0\",\"system_backup\":\"0\",\"system_bulk\":\"0\",\"system_media_storage_configuration\":\"0\",\"system_upload_configuration\":\"0\",\"system_media_gallery\":\"1\",\"system_adobe_stock_integration\":\"0\"}}',NULL,NULL,'en_GB',0,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
 

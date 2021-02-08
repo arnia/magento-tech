@@ -10,7 +10,9 @@ source "${PWD}"/.tech/.bootstrap
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
 
-"${BIN_DIRECTORY}"/utility/fixperms
+if [ "${OS}" != "Darwin" ]; then
+  "${BIN_DIRECTORY}"/utility/fixperms
+fi
 
 "${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
 
@@ -24,6 +26,8 @@ source "${PWD}"/.tech/.bootstrap
 "${BIN_DIRECTORY}"/indexer-reindex
 "${BIN_DIRECTORY}"/cache-enable
 
-"${BIN_DIRECTORY}"/utility/fixowners
+if [ "${OS}" != "Darwin" ]; then
+  "${BIN_DIRECTORY}"/utility/fixowners
+fi
 
 "${BIN_DIRECTORY}"/magento maintenance:disable

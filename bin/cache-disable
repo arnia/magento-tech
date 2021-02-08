@@ -1,4 +1,8 @@
 #!/bin/bash
 source "${PWD}"/.tech/.bootstrap
 
-"${BIN_DIRECTORY}"/magento cache:disable "$@"
+if [ "$1" == "--dev" ]; then
+  "${BIN_DIRECTORY}"/magento cache:disable config layout block_html collections eav full_page translate
+else
+  "${BIN_DIRECTORY}"/magento cache:disable "$@"
+fi
