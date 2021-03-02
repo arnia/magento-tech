@@ -1,4 +1,6 @@
 #!/bin/bash
 source "${PWD}"/.tech/.bootstrap
 
+"${BIN_DIRECTORY}"/composer install -o -v
+
 "${BIN_DIRECTORY}"/magento setup:upgrade
