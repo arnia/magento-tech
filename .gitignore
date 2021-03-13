@@ -48,3 +48,11 @@ Thumbs.db
 *.mov
 *.wmv
 
+# generated files
+stack/application/build/context/configuration/docker-php-ext-mailhog.ini
+stack/application/build/context/vhosts/application.docker.conf
+stack/application/build/context/magento/env.php
+stack/database/entrypoint/init.sql
+stack/accelerator/default.vcl
+stack/.env-file
+.bootstrap

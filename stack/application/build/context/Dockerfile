@@ -25,10 +25,11 @@ RUN apt-get install -y gnupg \
   && chown www-data:www-data /var/www/.config /var/www/.npm \
   && npm install -g grunt-cli
 
-RUN printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/update/cron.php\n' >> /etc/crontab \
-  && printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/bin/magento cron:run\n' >> /etc/crontab \
-  && printf '* *\t* * *\tapp\t%s/usr/local/bin/php /app/bin/magento setup:cron:run\n#\n' >> /etc/crontab
+RUN apt-get install -y htop
+
+COPY crontab/magento /etc/cron.d/magento
+RUN chmod 0644 /etc/cron.d/magento \
+ && crontab /etc/cron.d/magento
 
 COPY configuration/docker-apache2-envvars /etc/apache2/envvars
 COPY vhosts/application.docker.conf /opt/docker/etc/httpd/conf.d/application.docker.conf
-
