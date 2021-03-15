@@ -1,12 +1,12 @@
 #!/bin/bash
 source "${PWD}"/.tech/.bootstrap
 
-echo "Correcting filesystem ownerships..."
-
 if [ -z "$1" ]; then
+  echo "Correcting filesystem ownerships ..."
   "${BIN_DIRECTORY}"/utility/rootnotty chown -R application:application /app
 else
+  echo "Correcting filesystem ownerships for [$1] ..."
   "${BIN_DIRECTORY}"/utility/rootnotty chown -R application:application /app/"$1"
 fi
 
-echo "Filesystem ownerships corrected"
+echo "... filesystem ownerships corrected"

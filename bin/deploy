@@ -5,29 +5,39 @@ source "${PWD}"/.tech/.bootstrap
 
 "${BIN_DIRECTORY}"/bootstrap
 
-"${BIN_DIRECTORY}"/utility/rootnotty rm -rf generated/*
+echo "--> Clean static files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf pub/static/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
 
-if [ "${OS}" != "Darwin" ]; then
-  "${BIN_DIRECTORY}"/utility/fixperms
-fi
+echo "--> Stop cron jobs ..."
+"${BIN_DIRECTORY}"/utility/rootnotty service cron stop
 
-"${BIN_DIRECTORY}"/composer install -n --prefer-dist -v
+echo "--> Install required packages ..."
+"${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
+"${BIN_DIRECTORY}"/sync-vendor
+"${BIN_DIRECTORY}"/utility/rootnotty npm install -s -q
 
-"${BIN_DIRECTORY}"/cache-flush
-"${BIN_DIRECTORY}"/setup-upgrade
-"${BIN_DIRECTORY}"/setup-di-compile --sync
-"${BIN_DIRECTORY}"/setup-static-content-deploy
+echo "--> Run magento administrative tasks ..."
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:upgrade -q
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:di:compile -q
+"${BIN_DIRECTORY}"/sync-generated
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:static-content:deploy -q -f --jobs=10
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento indexer:reindex -q
+"${BIN_DIRECTORY}"/utility/clinotty bin/magento cache:enable -q
 
-"${BIN_DIRECTORY}"/composer dump-autoload -o -v
+"${BIN_DIRECTORY}"/utility/fixowners vendor
+"${BIN_DIRECTORY}"/utility/fixowners generated
+"${BIN_DIRECTORY}"/utility/fixowners pub/static
+"${BIN_DIRECTORY}"/utility/fixowners var/page_cache
+"${BIN_DIRECTORY}"/utility/fixowners var/view_preprocessed
+"${BIN_DIRECTORY}"/utility/fixperms vendor
+"${BIN_DIRECTORY}"/utility/fixperms generated
+"${BIN_DIRECTORY}"/utility/fixperms pub/static
+"${BIN_DIRECTORY}"/utility/fixperms var/page_cache
+"${BIN_DIRECTORY}"/utility/fixperms var/view_preprocessed
 
-"${BIN_DIRECTORY}"/indexer-reindex
-"${BIN_DIRECTORY}"/cache-enable
-
-if [ "${OS}" != "Darwin" ]; then
-  "${BIN_DIRECTORY}"/utility/fixowners
-fi
+echo "--> Start cron jobs ..."
+"${BIN_DIRECTORY}"/utility/rootnotty service cron start
 
 "${BIN_DIRECTORY}"/magento maintenance:disable

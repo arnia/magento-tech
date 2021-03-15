@@ -6,15 +6,15 @@ source "${PWD}"/.tech/stack/.env-file
 
 "${BIN_DIRECTORY}"/env/build
 
-echo "Generate application skeleton files ..."
+echo "--> Generate application skeleton files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/vendor
 "${BIN_DIRECTORY}"/utility/rootnotty mkdir -p /app/generated
 
-echo "Generate application configuration files ..."
+echo "--> Generate application configuration files ..."
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/build/context/magento/config.php /app/app/etc/config.php
 "${BIN_DIRECTORY}"/utility/copytocnt "${STACK_DIRECTORY}"/application/build/context/magento/env.php /app/app/etc/env.php
 
-echo "Fix owners and permissions for application files ..."
+echo "--> Fix owners and permissions for application files ..."
 "${BIN_DIRECTORY}"/utility/fixowners
 "${BIN_DIRECTORY}"/utility/fixperms
 
@@ -23,15 +23,15 @@ echo "Clean static files ..."
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/page_cache/*
 "${BIN_DIRECTORY}"/utility/rootnotty rm -rf var/view_preprocessed/*
 
-echo "Stop cron jobs ..."
+echo "--> Stop cron jobs ..."
 "${BIN_DIRECTORY}"/utility/rootnotty service cron stop
 
-echo "Install required packages ..."
-"${BIN_DIRECTORY}"/utility/clinotty composer install -n -v --prefer-dist
+echo "--> Install required packages ..."
+"${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
 "${BIN_DIRECTORY}"/sync-vendor
-"${BIN_DIRECTORY}"/utility/rootnotty npm install
+"${BIN_DIRECTORY}"/utility/rootnotty npm install -s -q
 
-echo "Run magento administrative tasks ..."
+echo "--> Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:upgrade -q
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento setup:di:compile -q
 "${BIN_DIRECTORY}"/sync-generated
@@ -40,19 +40,19 @@ echo "Run magento administrative tasks ..."
 "${BIN_DIRECTORY}"/utility/clinotty bin/magento cache:enable -q
 
 if [ "${OS}" != "Darwin" ]; then
-  echo "Setting local permissions ..."
+  echo "--> Setting local permissions ..."
   sudo chown -R $(whoami):$(id -gn) .
 fi
 
-echo "Fix owners and permissions for application files ..."
+echo "--> Fix owners and permissions for application files ..."
 "${BIN_DIRECTORY}"/utility/fixowners
 "${BIN_DIRECTORY}"/utility/fixperms
 
-echo "Start cron jobs ..."
+echo "--> Start cron jobs ..."
 "${BIN_DIRECTORY}"/utility/rootnotty service cron start
 
 if [ ! $(sed -n "/${HOST}/=" /etc/hosts) ]; then
-  echo "Create a DNS host entry for the application"
+  echo "--> Create a DNS host entry for the application"
   echo "127.0.0.1 ${HOST}" | sudo tee -a /etc/hosts
 fi
 
