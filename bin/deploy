@@ -13,6 +13,17 @@ echo "--> Clean static files ..."
 echo "--> Stop cron jobs ..."
 "${BIN_DIRECTORY}"/utility/rootnotty service cron stop
 
+"${BIN_DIRECTORY}"/utility/fixowners vendor
+"${BIN_DIRECTORY}"/utility/fixowners generated
+"${BIN_DIRECTORY}"/utility/fixowners pub/static
+"${BIN_DIRECTORY}"/utility/fixowners var/page_cache
+"${BIN_DIRECTORY}"/utility/fixowners var/view_preprocessed
+"${BIN_DIRECTORY}"/utility/fixperms vendor
+"${BIN_DIRECTORY}"/utility/fixperms generated
+"${BIN_DIRECTORY}"/utility/fixperms pub/static
+"${BIN_DIRECTORY}"/utility/fixperms var/page_cache
+"${BIN_DIRECTORY}"/utility/fixperms var/view_preprocessed
+
 echo "--> Install required packages ..."
 "${BIN_DIRECTORY}"/utility/clinotty composer install -n --prefer-dist
 "${BIN_DIRECTORY}"/sync-vendor
