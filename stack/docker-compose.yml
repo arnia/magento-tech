@@ -32,9 +32,6 @@ services:
       args:
           - MYSQL_VERSION=${MYSQL_VERSION:-8.0}
     container_name: database.${HOST}
-    command:
-      --max_allowed_packet=64M
-      --log_bin_trust_function_creators=1
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
