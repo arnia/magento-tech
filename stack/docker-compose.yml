@@ -27,7 +27,10 @@ services:
       - app-tier
 
   database:
-    image: mysql:${MYSQL_VERSION:-8.0}
+    build:
+      context: ./database/build/context
+      args:
+          - MYSQL_VERSION=${MYSQL_VERSION:-8.0}
     container_name: database.${HOST}
     command:
       --max_allowed_packet=64M
