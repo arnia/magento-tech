@@ -27,9 +27,9 @@ RUN apt-get install -y gnupg \
 
 RUN apt-get install -y htop
 
-COPY crontab/magento /etc/cron.d/magento
-RUN chmod 0644 /etc/cron.d/magento \
- && crontab /etc/cron.d/magento
+COPY crontab/magento /var/spool/cron/crontabs/application
+RUN chmod 0644 /var/spool/cron/crontabs/application \
+ && crontab /var/spool/cron/crontabs/application
 
 COPY configuration/docker-apache2-envvars /etc/apache2/envvars
 COPY vhosts/application.docker.conf /opt/docker/etc/httpd/conf.d/application.docker.conf
