@@ -1,6 +1,10 @@
 #!/bin/bash
 source "${PWD}"/.tech/.bootstrap
 
+"${BIN_DIRECTORY}"/utility/rootnotty service cron stop
+
 "${BIN_DIRECTORY}"/composer install -o -v
 
 "${BIN_DIRECTORY}"/magento setup:upgrade
+
+"${BIN_DIRECTORY}"/utility/rootnotty service cron start
