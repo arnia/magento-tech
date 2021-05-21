@@ -1,7 +1,11 @@
 #!/bin/bash
 source "${PWD}"/.tech/.bootstrap
 
+"${BIN_DIRECTORY}"/utility/rootnotty service cron stop
+
 "${BIN_DIRECTORY}"/magento setup:di:compile
 if [ "$1" == "--sync" ]; then
   "${BIN_DIRECTORY}"/sync-generated
 fi
+
+"${BIN_DIRECTORY}"/utility/rootnotty service cron start
